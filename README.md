@@ -1,4 +1,4 @@
-# music web app with vue.js and firebase
+# music web app with vue.js / tailwind / firebase
 
 This template should help get you started developing with Vue 3 in Vite.
 
