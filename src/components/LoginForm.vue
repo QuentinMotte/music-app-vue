@@ -39,11 +39,9 @@
   </vee-form>
 </template>
 <script>
-import { ErrorMessage } from 'vee-validate'
-
 export default {
   name: 'LoginForm',
-  components: { ErrorMessage },
+
   data() {
     return {
       loginSchema: {
