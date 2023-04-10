@@ -122,7 +122,6 @@ export default {
       },
 
       userData: {
-        artistOrListener: 'Listener',
         country: 'Belgium'
       },
       reg_in_submission: false,
@@ -151,6 +150,7 @@ export default {
 
       this.reg_alert_variant = 'bg-green-500'
       this.reg_aler_msg = 'Your account has been created.'
+      window.location.reload()
     }
   }
 }
