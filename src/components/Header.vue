@@ -26,6 +26,7 @@
     </nav>
   </header>
 </template>
+
 <script>
 import { mapStores } from 'pinia'
 import useModalStore from '@/stores/modal'
