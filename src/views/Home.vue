@@ -48,14 +48,57 @@ export default {
   components: { SongItem },
   data() {
     return {
-      songs: []
+      songs: [],
+      maxPerPage: 25,
+      pendingRequest: false
     }
   },
   async created() {
-    const snapshot = await songsCollection.get()
-    snapshot.forEach(doc => {
-      this.songs.push({ docID: doc.id, ...doc.data() })
-    })
+    await this.getSongs()
+
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
+  },
+  methods: {
+    handleScroll() {
+      const { innerHeight } = window
+      const { scrollTop, offsetHeight } = document.documentElement
+      const bottomOfWindow = Math.round(scrollTop) + innerHeight === offsetHeight
+
+      if (bottomOfWindow) {
+        this.getSongs()
+      }
+    },
+    async getSongs() {
+      if (this.pendingRequest) return
+
+      this.pendingRequest = true
+
+      let snapshot
+
+      if (this.songs.length) {
+        const lastSong = await songsCollection
+          .doc(this.songs[this.songs.length - 1].docID)
+          .get()
+        snapshot = await songsCollection
+          .orderBy('modifiedName')
+          .startAfter(lastSong)
+          .limit(this.maxPerPage)
+          .get()
+      } else {
+        snapshot = await songsCollection
+          .orderBy('modifiedName')
+          .limit(this.maxPerPage)
+          .get()
+      }
+      snapshot.forEach(doc => {
+        this.songs.push({ docID: doc.id, ...doc.data() })
+      })
+
+      this.pendingRequest = false
+    }
   }
 }
 </script>
