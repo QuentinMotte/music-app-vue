@@ -1,20 +1,14 @@
+import { configure, defineRule, ErrorMessage, Field as VeeField, Form as VeeForm } from 'vee-validate'
 import {
-  Form as VeeForm,
-  Field as VeeField,
-  defineRule,
-  ErrorMessage,
-  configure
-} from 'vee-validate'
-import {
-  required,
-  min,
-  max,
   alpha_spaces as alphaSpaces,
-  email,
-  min_value as minVal,
-  max_value as maxVal,
   confirmed,
-  not_one_of as excluded
+  email,
+  max,
+  max_value as maxVal,
+  min,
+  min_value as minVal,
+  not_one_of as excluded,
+  required
 } from '@vee-validate/rules'
 
 export default {
@@ -48,15 +42,13 @@ export default {
           max_value: `The field ${ctx.field} is too high.`,
           excluded: `You are not allowed to use this value for the field ${ctx.field}.`,
           country_excluded: 'Due to restrictions, we do not accept users from this location.',
-          passwords_mismatch: "The passwords don't match.",
+          passwords_mismatch: 'The passwords don\'t match.',
           tos: 'You must accept the Terms of Service.'
         }
 
-        const message = messages[ctx.rule.name]
+        return messages[ctx.rule.name]
           ? messages[ctx.rule.name]
           : `The field ${ctx.field} is invalid.`
-
-        return message
       },
       validateOnBlur: true,
       validateOnChange: true,
